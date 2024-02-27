@@ -3,8 +3,8 @@ import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { UserPayload } from '@/infra/auth/jwt.stratedy'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { z } from 'zod'
+import { FetchDogsPerOwnerUseCase } from '@/domain/customers/application/use-cases/fetch-dogs-per-owner'
 
 const pageQueryParamSchema = z
   .string()
@@ -20,26 +20,18 @@ const queryValidationPipe = new ZodValidationPipe(pageQueryParamSchema)
 @Controller('/dogs')
 @UseGuards(JwtAuthGuard)
 export class FetchDogsRegisterPerOwnerController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private fetchDogPerOwner: FetchDogsPerOwnerUseCase) {}
 
   @Get()
   async handle(
     @Query('page', queryValidationPipe) page: PageQueryParamSchema,
     @CurrentUser() user: UserPayload,
   ) {
-    const perPage = 2
-
     const userId = user.sub
 
-    const dogs = await this.prisma.dog.findMany({
-      where: {
-        ownerId: userId,
-      },
-      take: perPage,
-      skip: (page - 1) * perPage,
-      orderBy: {
-        createdAt: 'desc',
-      },
+    const dogs = await this.fetchDogPerOwner.execute({
+      ownerId: userId,
+      page,
     })
 
     return { dogs }

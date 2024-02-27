@@ -1,4 +1,4 @@
-import { Dog, DogProps } from '@/core/domain/customers/enterprise/entities/dog'
+import { Dog, DogProps } from '@/domain/customers/enterprise/entities/dog'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { faker } from '@faker-js/faker'
 

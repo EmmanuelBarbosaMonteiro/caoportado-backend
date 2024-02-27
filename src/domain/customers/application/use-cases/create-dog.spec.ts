@@ -1,13 +1,13 @@
-import { InMemoryDogRepository } from 'test/repositories/in-memory-dog-repository'
+import { InMemoryDogsRepository } from 'test/repositories/in-memory-dog-repository'
 import { CreateDogUseCase } from './create-dog'
 
-let inMemoryDogRepository: InMemoryDogRepository
+let inMemoryDogsRepository: InMemoryDogsRepository
 let sut: CreateDogUseCase
 
 describe('Create Dog', () => {
   beforeEach(() => {
-    inMemoryDogRepository = new InMemoryDogRepository()
-    sut = new CreateDogUseCase(inMemoryDogRepository)
+    inMemoryDogsRepository = new InMemoryDogsRepository()
+    sut = new CreateDogUseCase(inMemoryDogsRepository)
   })
 
   it('should be able to create a dog', async () => {
@@ -17,6 +17,6 @@ describe('Create Dog', () => {
     })
 
     expect(result.isRight()).toBe(true)
-    expect(inMemoryDogRepository.items[0]).toEqual(result.value?.dog)
+    expect(inMemoryDogsRepository.items[0]).toEqual(result.value?.dog)
   })
 })

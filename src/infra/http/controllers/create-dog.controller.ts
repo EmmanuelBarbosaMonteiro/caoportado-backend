@@ -4,7 +4,7 @@ import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { UserPayload } from '@/infra/auth/jwt.stratedy'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
-import { CreateDogUseCase } from '@/core/domain/customers/application/use-cases/create-dog'
+import { CreateDogUseCase } from '@/domain/customers/application/use-cases/create-dog'
 
 const createDogBodySchema = z.object({
   name: z.string(),

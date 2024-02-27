@@ -1,16 +1,16 @@
 import { Module } from '@nestjs/common'
 import { PrismaService } from './prisma/prisma.service'
-import { DogRepository } from '@/core/domain/customers/application/repositories/dog-repository'
-import { PrismaDogRepository } from './prisma/repositories/prisma-dog-repository'
+import { DogsRepository } from '@/domain/customers/application/repositories/dog-repository'
+import { PrismaDogsRepository } from './prisma/repositories/prisma-dog-repository'
 
 @Module({
   providers: [
     PrismaService,
     {
-      provide: DogRepository,
-      useClass: PrismaDogRepository,
+      provide: DogsRepository,
+      useClass: PrismaDogsRepository,
     },
   ],
-  exports: [PrismaService, DogRepository],
+  exports: [PrismaService, DogsRepository],
 })
 export class DatabaseModule {}
