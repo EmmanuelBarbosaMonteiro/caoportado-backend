@@ -1,10 +1,10 @@
 import { Body, Controller, Post, UseGuards } from '@nestjs/common'
-import { CurrentUser } from '@/auth/current-user-decorator'
-import { JwtAuthGuard } from '@/auth/jwt-auth.guard'
-import { UserPayload } from '@/auth/jwt.stratedy'
-import { ZodValidationPipe } from '@/pipes/zod-validation-pipe'
-import { PrismaService } from '@/prisma/prisma.service'
+import { CurrentUser } from '@/infra/auth/current-user-decorator'
+import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
+import { UserPayload } from '@/infra/auth/jwt.stratedy'
+import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
+import { CreateDogUseCase } from '@/core/domain/customers/application/use-cases/create-dog'
 
 const createDogBodySchema = z.object({
   name: z.string(),
@@ -17,7 +17,7 @@ const bodyValidationPipe = new ZodValidationPipe(createDogBodySchema)
 @Controller('/dogs')
 @UseGuards(JwtAuthGuard)
 export class CreateDogController {
-  constructor(private prisma: PrismaService) {}
+  constructor(private createDog: CreateDogUseCase) {}
 
   @Post()
   async handle(
@@ -27,11 +27,9 @@ export class CreateDogController {
     const { name } = body
     const userId = user.sub
 
-    await this.prisma.dog.create({
-      data: {
-        ownerId: userId,
-        name,
-      },
+    await this.createDog.execute({
+      ownerId: userId,
+      name,
     })
   }
 }
