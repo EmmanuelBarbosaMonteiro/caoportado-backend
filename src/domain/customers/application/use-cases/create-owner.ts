@@ -1,6 +1,6 @@
 import { Either, left, right } from '@/core/either'
 import { Injectable } from '@nestjs/common'
-import { HashGenerator } from '../crytography/hash-generator'
+import { HashGenerator } from '../cryptography/hash-generator'
 import { OwnerAlreadyExistsError } from './errors/owner-alredy-exists-error'
 import { Owner } from '../../enterprise/entities/owner'
 import { OwnersRepository } from '../repositories/owner-repository'
