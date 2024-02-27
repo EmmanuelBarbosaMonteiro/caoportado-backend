@@ -5,6 +5,7 @@ import { UserPayload } from '@/infra/auth/jwt.stratedy'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { FetchDogsPerOwnerUseCase } from '@/domain/customers/application/use-cases/fetch-dogs-per-owner'
+import { HttpDogPresenter } from '../presenters/http-dog-presenter'
 
 const pageQueryParamSchema = z
   .string()
@@ -29,11 +30,13 @@ export class FetchDogsRegisterPerOwnerController {
   ) {
     const userId = user.sub
 
-    const dogs = await this.fetchDogPerOwner.execute({
+    const result = await this.fetchDogPerOwner.execute({
       ownerId: userId,
       page,
     })
 
-    return { dogs }
+    const dogs = result.value?.dogs
+
+    return { dogs: dogs?.map(HttpDogPresenter.toHTTP) }
   }
 }
