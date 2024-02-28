@@ -6,7 +6,7 @@ export function makeDog(override: Partial<DogProps> = {}, id?: UniqueEntityID) {
   const dog = Dog.create(
     {
       ownerId: new UniqueEntityID(),
-      name: faker.lorem.sentence(),
+      name: faker.animal.dog(),
       ...override,
     },
     id,

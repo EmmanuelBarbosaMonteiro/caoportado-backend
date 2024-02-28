@@ -30,9 +30,9 @@ export class RegisterOwnerUseCase {
     email,
     password,
   }: RegisterOwnerUseCaseRequest): Promise<RegisterOwnerUseCaseResponse> {
-    const studentWithSameEmail = await this.ownersRepository.findByEmail(email)
+    const ownerWithSameEmail = await this.ownersRepository.findByEmail(email)
 
-    if (studentWithSameEmail) {
+    if (ownerWithSameEmail) {
       return left(new OwnerAlreadyExistsError(email))
     }
 
