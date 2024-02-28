@@ -1,7 +1,15 @@
-import { Body, Controller, HttpCode, Post } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  ConflictException,
+  Controller,
+  HttpCode,
+  Post,
+} from '@nestjs/common'
 import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { RegisterOwnerUseCase } from '@/domain/customers/application/use-cases/register-owner'
+import { OwnerAlreadyExistsError } from '@/domain/customers/application/use-cases/errors/owner-alredy-exists-error'
 
 const createAccountBodySchema = z.object({
   name: z.string(),
@@ -29,7 +37,14 @@ export class CreateAccountController {
     })
 
     if (result.isLeft()) {
-      throw new Error()
+      const error = result.value
+
+      switch (error.constructor) {
+        case OwnerAlreadyExistsError:
+          throw new ConflictException(error.message)
+        default:
+          throw new BadRequestException(error.message)
+      }
     }
   }
 }

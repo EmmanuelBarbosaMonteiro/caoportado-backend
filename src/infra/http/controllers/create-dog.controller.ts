@@ -1,4 +1,10 @@
-import { Body, Controller, Post, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Post,
+  UseGuards,
+} from '@nestjs/common'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { UserPayload } from '@/infra/auth/jwt.stratedy'
@@ -27,9 +33,13 @@ export class CreateDogController {
     const { name } = body
     const userId = user.sub
 
-    await this.createDog.execute({
+    const result = await this.createDog.execute({
       ownerId: userId,
       name,
     })
+
+    if (result.isLeft()) {
+      throw new BadRequestException()
+    }
   }
 }

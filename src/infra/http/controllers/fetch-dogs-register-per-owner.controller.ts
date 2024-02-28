@@ -1,4 +1,10 @@
-import { Controller, Get, Query, UseGuards } from '@nestjs/common'
+import {
+  BadRequestException,
+  Controller,
+  Get,
+  Query,
+  UseGuards,
+} from '@nestjs/common'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { JwtAuthGuard } from '@/infra/auth/jwt-auth.guard'
 import { UserPayload } from '@/infra/auth/jwt.stratedy'
@@ -34,6 +40,10 @@ export class FetchDogsRegisterPerOwnerController {
       ownerId: userId,
       page,
     })
+
+    if (result.isLeft()) {
+      throw new BadRequestException()
+    }
 
     const dogs = result.value?.dogs
 
