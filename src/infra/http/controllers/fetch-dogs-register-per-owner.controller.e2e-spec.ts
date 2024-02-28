@@ -24,7 +24,7 @@ describe('Fetch dogs register per owner (E2E)', () => {
   })
 
   test('[GET] /dogs', async () => {
-    const user = await prisma.user.create({
+    const customer = await prisma.customer.create({
       data: {
         name: 'John Doe',
         email: 'johndoe@example.com',
@@ -32,17 +32,17 @@ describe('Fetch dogs register per owner (E2E)', () => {
       },
     })
 
-    const accessToken = jwt.sign({ sub: user.id })
+    const accessToken = jwt.sign({ sub: customer.id })
 
     await prisma.dog.createMany({
       data: [
         {
           name: 'Dog 01',
-          ownerId: user.id,
+          ownerId: customer.id,
         },
         {
           name: 'Dog 02',
-          ownerId: user.id,
+          ownerId: customer.id,
         },
       ],
     })

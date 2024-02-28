@@ -22,7 +22,7 @@ describe('Create Account (E2E)', () => {
   })
 
   test('[POST] /sessions', async () => {
-    await prisma.user.create({
+    await prisma.customer.create({
       data: {
         name: 'John Doe',
         email: 'johndoe@example.com',

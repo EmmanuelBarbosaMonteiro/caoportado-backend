@@ -7,23 +7,17 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-enum UserRole {
-  ADMINISTRATOR
-  CUSTOMER
-}
-
-model User {
+model Customer {
   id        String    @id @default(uuid())
   name      String
   email     String    @unique
   password  String
-  role      UserRole  @default(CUSTOMER)
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
   dogs Dog[]
 
-  @@map("users")
+  @@map("customers")
 }
 
 model Dog {
@@ -33,7 +27,7 @@ model Dog {
   updatedAt DateTime? @updatedAt @map("updated_at")
   ownerId   String    @map("owner_id")
 
-  owner User @relation(fields: [ownerId], references: [id])
+  owner Customer @relation(fields: [ownerId], references: [id])
 
   @@map("dogs")
 }

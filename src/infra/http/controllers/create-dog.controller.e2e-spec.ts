@@ -24,7 +24,7 @@ describe('Create dog (E2E)', () => {
   })
 
   test('[POST] /dogs', async () => {
-    const user = await prisma.user.create({
+    const customer = await prisma.customer.create({
       data: {
         name: 'John Doe',
         email: 'johndoe@example.com',
@@ -32,7 +32,7 @@ describe('Create dog (E2E)', () => {
       },
     })
 
-    const accessToken = jwt.sign({ sub: user.id })
+    const accessToken = jwt.sign({ sub: customer.id })
 
     const response = await request(app.getHttpServer())
       .post('/dogs')
