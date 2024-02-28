@@ -10,6 +10,7 @@ import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
 import { z } from 'zod'
 import { RegisterOwnerUseCase } from '@/domain/customers/application/use-cases/register-owner'
 import { OwnerAlreadyExistsError } from '@/domain/customers/application/use-cases/errors/owner-alredy-exists-error'
+import { Public } from '@/infra/auth/public'
 
 const createAccountBodySchema = z.object({
   name: z.string(),
@@ -22,6 +23,7 @@ type CreateAccountBodySchema = z.infer<typeof createAccountBodySchema>
 const bodyValidatetionPipe = new ZodValidationPipe(createAccountBodySchema)
 
 @Controller('/accounts')
+@Public()
 export class CreateAccountController {
   constructor(private registerOwner: RegisterOwnerUseCase) {}
 
