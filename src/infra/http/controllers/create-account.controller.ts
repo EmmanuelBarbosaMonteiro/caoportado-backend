@@ -13,7 +13,8 @@ import { OwnerAlreadyExistsError } from '@/domain/customers/application/use-case
 import { Public } from '@/infra/auth/public'
 
 const createAccountBodySchema = z.object({
-  name: z.string(),
+  firstName: z.string(),
+  lastName: z.string(),
   email: z.string().email(),
   password: z.string(),
 })
@@ -30,10 +31,11 @@ export class CreateAccountController {
   @Post()
   @HttpCode(201)
   async handle(@Body(bodyValidatetionPipe) body: CreateAccountBodySchema) {
-    const { name, email, password } = body
+    const { firstName, lastName, email, password } = body
 
     const result = await this.registerOwner.execute({
-      name,
+      firstName,
+      lastName,
       email,
       password,
     })

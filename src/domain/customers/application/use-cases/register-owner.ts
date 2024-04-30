@@ -6,7 +6,8 @@ import { Owner } from '../../enterprise/entities/owner'
 import { OwnersRepository } from '../repositories/owner-repository'
 
 interface RegisterOwnerUseCaseRequest {
-  name: string
+  firstName: string
+  lastName: string
   email: string
   password: string
 }
@@ -26,7 +27,8 @@ export class RegisterOwnerUseCase {
   ) {}
 
   async execute({
-    name,
+    firstName,
+    lastName,
     email,
     password,
   }: RegisterOwnerUseCaseRequest): Promise<RegisterOwnerUseCaseResponse> {
@@ -39,7 +41,8 @@ export class RegisterOwnerUseCase {
     const hashedPassword = await this.hashGenerator.hash(password)
 
     const owner = Owner.create({
-      name,
+      firstName,
+      lastName,
       email,
       password: hashedPassword,
     })

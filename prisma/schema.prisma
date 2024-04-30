@@ -9,7 +9,8 @@ datasource db {
 
 model Customer {
   id        String    @id @default(uuid())
-  name      String
+  fristName String    @map("first_name")
+  lastName  String    @map("last_name")
   email     String    @unique
   password  String
   createdAt DateTime  @default(now()) @map("created_at")

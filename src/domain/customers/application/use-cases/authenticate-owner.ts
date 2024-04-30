@@ -46,6 +46,8 @@ export class AuthenticateOwnerUseCase {
 
     const accessToken = await this.encrypter.encrypt({
       sub: owner.id.toString(),
+      name: owner.firstName.toString().toUpperCase(),
+      email: owner.email.toString().toLowerCase(),
     })
 
     return right({

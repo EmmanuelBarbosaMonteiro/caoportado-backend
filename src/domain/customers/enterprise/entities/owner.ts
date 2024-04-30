@@ -3,7 +3,8 @@ import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
 
 export interface OwnerProps {
-  name: string
+  firstName: string
+  lastName: string
   email: string
   password: string
   createdAt: Date
@@ -11,8 +12,12 @@ export interface OwnerProps {
 }
 
 export class Owner extends Entity<OwnerProps> {
-  get name() {
-    return this.props.name
+  get lastName() {
+    return this.props.lastName
+  }
+
+  get firstName() {
+    return this.props.firstName
   }
 
   get email() {

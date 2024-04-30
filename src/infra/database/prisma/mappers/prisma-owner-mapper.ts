@@ -6,7 +6,8 @@ export class PrismaOwnerMapper {
   static toDomain(raw: PrismaUser): Owner {
     return Owner.create(
       {
-        name: raw.name,
+        firstName: raw.fristName,
+        lastName: raw.lastName,
         email: raw.email,
         password: raw.password,
       },
@@ -17,7 +18,8 @@ export class PrismaOwnerMapper {
   static toPrisma(owner: Owner): Prisma.CustomerUncheckedCreateInput {
     return {
       id: owner.id.toString(),
-      name: owner.name,
+      fristName: owner.firstName,
+      lastName: owner.lastName,
       email: owner.email,
       password: owner.password,
     }
