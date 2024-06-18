@@ -8,7 +8,8 @@ export function makeOwner(
 ) {
   const owner = Owner.create(
     {
-      name: faker.person.fullName(),
+      firstName: faker.person.fullName(),
+      lastName: faker.person.lastName(),
       email: faker.internet.email(),
       password: faker.internet.password(),
       ...override,

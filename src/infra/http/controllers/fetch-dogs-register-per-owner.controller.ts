@@ -39,6 +39,6 @@ export class FetchDogsRegisterPerOwnerController {
 
     const dogs = result.value?.dogs
 
-    return { dogs: dogs?.map(HttpDogPresenter.toHTTP) }
+    return { dogs: dogs?.map(HttpDogPresenter.toHTTPDogs) }
   }
 }

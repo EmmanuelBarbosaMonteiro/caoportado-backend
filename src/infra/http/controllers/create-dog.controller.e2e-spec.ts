@@ -1,4 +1,5 @@
 import { AppModule } from '@/infra/app.module'
+import { DatabaseModule } from '@/infra/database/database.module'
 import { PrismaService } from '@/infra/database/prisma/prisma.service'
 import { INestApplication } from '@nestjs/common'
 import { JwtService } from '@nestjs/jwt'
@@ -12,7 +13,7 @@ describe('Create dog (E2E)', () => {
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
-      imports: [AppModule],
+      imports: [AppModule, DatabaseModule],
     }).compile()
 
     app = moduleRef.createNestApplication()
@@ -23,32 +24,47 @@ describe('Create dog (E2E)', () => {
     await app.init()
   })
 
+  afterAll(async () => {
+    await prisma.$disconnect()
+    await app.close()
+  })
+
   test('[POST] /dogs', async () => {
     const customer = await prisma.customer.create({
       data: {
-        name: 'John Doe',
+        firstName: 'John',
+        lastName: 'Doe',
         email: 'johndoe@example.com',
         password: '123456',
       },
     })
 
-    const accessToken = jwt.sign({ sub: customer.id })
+    const accessToken = jwt.sign({ sub: customer.id.toString() })
 
     const response = await request(app.getHttpServer())
       .post('/dogs')
       .set('Authorization', `Bearer ${accessToken}`)
       .send({
         name: 'Snoopy',
+        gender: 'Male',
+        size: 'Medium',
+        breed: 'Labrador',
+        birthdate: '2022-01-01',
+        isNeutered: false,
+        isTreatedAgainstTicks: '2022-01-01',
+        isTreatedAgainstWorms: '2022-01-01',
+        vaccinesCard: 'Vaccines Card',
       })
 
     expect(response.statusCode).toBe(201)
 
-    const questionOnDatabase = await prisma.dog.findFirst({
+    const dogOnDatabase = await prisma.dog.findFirst({
       where: {
         name: 'Snoopy',
+        ownerId: customer.id,
       },
     })
 
-    expect(questionOnDatabase).toBeTruthy()
+    expect(dogOnDatabase).toBeTruthy()
   })
 })

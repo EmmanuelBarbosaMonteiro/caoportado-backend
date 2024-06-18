@@ -26,7 +26,8 @@ describe('Fetch dogs register per owner (E2E)', () => {
   test('[GET] /dogs', async () => {
     const customer = await prisma.customer.create({
       data: {
-        name: 'John Doe',
+        firstName: 'John',
+        lastName: 'Doe',
         email: 'johndoe@example.com',
         password: '123456',
       },
@@ -39,10 +40,26 @@ describe('Fetch dogs register per owner (E2E)', () => {
         {
           name: 'Dog 01',
           ownerId: customer.id,
+          gender: 'Male',
+          size: 'Medium',
+          breed: 'Labrador',
+          birthdate: '2022-01-01T00:00:00.000Z',
+          isNeutered: false,
+          isTreatedAgainstTicks: '2022-01-01T00:00:00.000Z',
+          isTreatedAgainstWorms: '2022-01-01T00:00:00.000Z',
+          vaccinesCard: 'Vaccines Card',
         },
         {
           name: 'Dog 02',
           ownerId: customer.id,
+          gender: 'Male',
+          size: 'Medium',
+          breed: 'Labrador',
+          birthdate: '2022-01-01T00:00:00.000Z',
+          isNeutered: false,
+          isTreatedAgainstTicks: '2022-01-01T00:00:00.000Z',
+          isTreatedAgainstWorms: '2022-01-01T00:00:00.000Z',
+          vaccinesCard: 'Vaccines Card',
         },
       ],
     })

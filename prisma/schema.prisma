@@ -7,28 +7,73 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Customer {
-  id        String    @id @default(uuid())
-  fristName String    @map("first_name")
-  lastName  String    @map("last_name")
-  email     String    @unique
+enum Role {
+  ADMIN
+  CUSTOMER
+}
+
+enum StatusAccommodation {
+  PENDING
+  APPROVED
+  CANCELLED
+}
+
+model User {
+  id        String @id @default(uuid())
+  firstName String @map("first_name")
+  lastName  String @map("last_name")
+  email     String @unique
   password  String
+
+  role Role @default(CUSTOMER)
+
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
 
-  dogs Dog[]
+  dogs          Dog[]
+  Accommodation Accommodation[]
 
-  @@map("customers")
+  @@map("users")
 }
 
 model Dog {
-  id        String    @id @default(uuid())
-  name      String
+  id                    String   @id @default(uuid())
+  name                  String
+  gender                String
+  size                  String
+  breed                 String
+  birthdate             DateTime
+  isNeutered            Boolean  @map("is_neutered")
+  isTreatedAgainstTicks DateTime @map("is_treated_against_ticks")
+  isTreatedAgainstWorms DateTime @map("is_treated_against_worms")
+  vaccinesCard          String   @map("vaccines_card")
+
   createdAt DateTime  @default(now()) @map("created_at")
   updatedAt DateTime? @updatedAt @map("updated_at")
-  ownerId   String    @map("owner_id")
 
-  owner Customer @relation(fields: [ownerId], references: [id])
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  accommodations Accommodation[]
 
   @@map("dogs")
+}
+
+model Accommodation {
+  id           String              @id @default(uuid())
+  status       StatusAccommodation @default(PENDING)
+  checkInDate  DateTime            @map("check_in_date")
+  checkOutDate DateTime            @map("check_out_date")
+  isPaid       DateTime?           @map("is_paid")
+
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime? @updatedAt @map("updated_at")
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  dogId String @map("dog_id")
+  dog   Dog    @relation(fields: [dogId], references: [id])
+
+  @@map("accommodations")
 }

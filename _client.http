@@ -1,0 +1,103 @@
+@baseUrl = http://localhost:3333
+@authToken = {{authenticate.response.body.access_token}}
+@dogId = {{create_dog.response.body.dog.id}}
+
+# @name create_account
+POST {{baseUrl}}/accounts
+Content-Type: application/json
+
+{
+  "firstName": "Jhon",
+  "lastName": "Doe",
+  "email": "jhondoe@example.com",
+  "password": "123456"
+}
+
+###
+
+# @name authenticate
+POST {{baseUrl}}/sessions
+Content-Type: application/json
+
+{
+  "email": "jhondoe@example.com",
+  "password": "123456"
+}
+
+###
+
+# @name create_dog
+POST {{baseUrl}}/dogs
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Snoopy",
+  "gender": "Macho",
+  "size": "Médio",
+  "breed": "Labrador",
+  "birthdate": "2022-01-01",
+  "isNeutered": true,
+  "isTreatedAgainstTicks": "2022-01-01",
+  "isTreatedAgainstWorms": "2022-01-01",
+  "vaccinesCard": "Vaccines Card"
+}
+
+###
+
+# @name edit_dog
+PUT {{baseUrl}}/dogs/{{dogId}}
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "name": "Sadik",
+  "gender": "Macho",
+  "size": "Grande",
+  "breed": "Pastor Alemão",
+  "birthdate": "2022-01-01",
+  "isNeutered": false,
+  "isTreatedAgainstTicks": "2022-01-01",
+  "isTreatedAgainstWorms": "2022-01-01",
+  "vaccinesCard": "Vaccines Card"
+}
+
+###
+
+# @name fetch_recent_dogs
+GET {{baseUrl}}/dogs?page=1
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name delete_dog
+DELETE  {{baseUrl}}/dogs/b4bdb090-73a8-4eda-8c05-69e61a1a7e68
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name get_dog_by_id_per_owner
+GET {{baseUrl}}/dogs/f1cacdb2-24f1-4b49-ab40-e62c459d6fb9
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name create_accommodation
+POST {{baseUrl}}/accommodation
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "dogId": "b4bdb090-73a8-4eda-8c05-69e61a1a7e68",
+  "checkInDate": "2022-01-01",
+  "checkOutDate": "2022-01-01"
+}
+
+###
+
+# @name fetch_accommodations_per_owner
+GET {{baseUrl}}/accommodation
+Content-Type: application/json
+Authorization: Bearer {{authToken}}

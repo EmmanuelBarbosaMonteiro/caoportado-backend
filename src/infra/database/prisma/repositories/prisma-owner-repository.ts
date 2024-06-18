@@ -9,9 +9,23 @@ export class PrismaOwnerRepository implements OwnersRepository {
   constructor(private prisma: PrismaService) {}
 
   async findByEmail(email: string): Promise<Owner | null> {
-    const owner = await this.prisma.customer.findUnique({
+    const owner = await this.prisma.user.findUnique({
       where: {
         email,
+      },
+    })
+
+    if (!owner) {
+      return null
+    }
+
+    return PrismaOwnerMapper.toDomain(owner)
+  }
+
+  async findById(id: string): Promise<Owner | null> {
+    const owner = await this.prisma.user.findUnique({
+      where: {
+        id,
       },
     })
 
@@ -25,7 +39,7 @@ export class PrismaOwnerRepository implements OwnersRepository {
   async create(owner: Owner): Promise<void> {
     const data = PrismaOwnerMapper.toPrisma(owner)
 
-    await this.prisma.customer.create({
+    await this.prisma.user.create({
       data,
     })
   }

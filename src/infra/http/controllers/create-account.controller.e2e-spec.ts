@@ -20,6 +20,11 @@ describe('Create Account (E2E)', () => {
     await app.init()
   })
 
+  afterAll(async () => {
+    await prisma.$disconnect()
+    await app.close()
+  })
+
   test('[POST] /accounts', async () => {
     const response = await request(app.getHttpServer()).post('/accounts').send({
       firstName: 'John',

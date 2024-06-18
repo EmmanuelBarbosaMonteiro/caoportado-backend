@@ -21,10 +21,16 @@ describe('Create Account (E2E)', () => {
     await app.init()
   })
 
+  afterAll(async () => {
+    await prisma.$disconnect()
+    await app.close()
+  })
+
   test('[POST] /sessions', async () => {
     await prisma.customer.create({
       data: {
-        name: 'John Doe',
+        firstName: 'John',
+        lastName: 'Doe',
         email: 'johndoe@example.com',
         password: await hash('123456', 8),
       },

@@ -1,12 +1,18 @@
-import { BadRequestException, Body, Controller, Post } from '@nestjs/common'
+import { z } from 'zod'
+import { ZodValidationPipe } from '../pipes/zod-validation-pipe'
+import {
+  BadRequestException,
+  Body,
+  Controller,
+  Param,
+  Put,
+} from '@nestjs/common'
+import { EditDogUseCase } from '@/domain/customers/application/use-cases/edit-dog'
 import { CurrentUser } from '@/infra/auth/current-user-decorator'
 import { UserPayload } from '@/infra/auth/jwt.stratedy'
-import { ZodValidationPipe } from '@/infra/http/pipes/zod-validation-pipe'
-import { z } from 'zod'
-import { CreateDogUseCase } from '@/domain/customers/application/use-cases/create-dog'
 import { HttpDogPresenter } from '../presenters/http-dog-presenter'
 
-const createDogBodySchema = z.object({
+const editDogBodySchema = z.object({
   name: z.string(),
   gender: z.string(),
   size: z.string(),
@@ -15,9 +21,7 @@ const createDogBodySchema = z.object({
     (data) => {
       return !isNaN(new Date(data).getTime())
     },
-    {
-      message: 'Invalid date format for birthdate',
-    },
+    { message: 'Invalid date format for birthdate' },
   ),
   isNeutered: z.boolean(),
   isTreatedAgainstTicks: z.string().refine(
@@ -39,17 +43,18 @@ const createDogBodySchema = z.object({
   vaccinesCard: z.string(),
 })
 
-type CreateDogBodySchema = z.infer<typeof createDogBodySchema>
+type EditDogBodySchema = z.infer<typeof editDogBodySchema>
 
-const bodyValidationPipe = new ZodValidationPipe(createDogBodySchema)
+const bodyValidationPipe = new ZodValidationPipe(editDogBodySchema)
 
 @Controller('/dogs')
-export class CreateDogController {
-  constructor(private createDog: CreateDogUseCase) {}
+export class EditDogController {
+  constructor(private editDog: EditDogUseCase) {}
 
-  @Post()
+  @Put(':id')
   async handle(
-    @Body(bodyValidationPipe) body: CreateDogBodySchema,
+    @Param('id') dogId: string,
+    @Body(bodyValidationPipe) body: EditDogBodySchema,
     @CurrentUser() user: UserPayload,
   ) {
     const {
@@ -65,8 +70,9 @@ export class CreateDogController {
     } = body
     const userId = user.sub
 
-    const result = await this.createDog.execute({
+    const result = await this.editDog.execute({
       ownerId: userId,
+      dogId,
       name,
       gender,
       size,
@@ -79,7 +85,7 @@ export class CreateDogController {
     })
 
     if (result.isLeft()) {
-      throw new BadRequestException()
+      throw new BadRequestException(result.value)
     }
 
     const dog = result.value.dog
