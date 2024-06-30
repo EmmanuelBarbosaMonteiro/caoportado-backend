@@ -8,6 +8,7 @@ export class HttpAccommodationPresenter {
       dogId: accommodation.dogId.toString(),
       checkInDate: accommodation.checkInDate,
       checkOutDate: accommodation.checkOutDate,
+      status: accommodation.status,
     }
   }
 
@@ -19,6 +20,7 @@ export class HttpAccommodationPresenter {
       dogName,
       checkInDate: accommodation.checkInDate,
       checkOutDate: accommodation.checkOutDate,
+      status: accommodation.status,
     }
   }
 }

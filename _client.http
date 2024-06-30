@@ -32,12 +32,12 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "name": "Snoopy",
+  "name": "Nala",
   "gender": "Macho",
   "size": "Médio",
   "breed": "Labrador",
   "birthdate": "2022-01-01",
-  "isNeutered": true,
+  "isNeutered": false,
   "isTreatedAgainstTicks": "2022-01-01",
   "isTreatedAgainstWorms": "2022-01-01",
   "vaccinesCard": "Vaccines Card"
@@ -90,7 +90,7 @@ Content-Type: application/json
 Authorization: Bearer {{authToken}}
 
 {
-  "dogId": "b4bdb090-73a8-4eda-8c05-69e61a1a7e68",
+  "dogId": "0838bff2-5ecf-4890-ae94-ca0c2e105127",
   "checkInDate": "2022-01-01",
   "checkOutDate": "2022-01-01"
 }
@@ -101,3 +101,45 @@ Authorization: Bearer {{authToken}}
 GET {{baseUrl}}/accommodation
 Content-Type: application/json
 Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_owner
+GET {{baseUrl}}/owners?page=1
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_owner
+GET {{baseUrl}}/owners?page=1&customerName=d
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_accommodation
+GET {{baseUrl}}/accommodations?page=4
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_accommodations
+GET {{baseUrl}}/accommodations?dogName=Buddy
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name fetch_accommodations
+GET {{baseUrl}}/accommodations?accommodationStatus=CANCELLED
+Authorization: Bearer {{authToken}}
+
+###
+
+# @name set_status_accommodations
+POST {{baseUrl}}/accommodations/status
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+  "accommodationId": "db16d800-3baa-4f0d-afe5-d643443315eb",
+  "accommodationStatus": "CANCELLED"
+}

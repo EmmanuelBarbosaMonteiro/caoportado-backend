@@ -65,7 +65,6 @@ describe('Edit dog (E2E)', () => {
         vaccinesCard: 'New Vaccines Card',
       })
 
-    console.log('Response body teste 2:', response.body)
     expect(response.statusCode).toBe(200)
 
     const updatedDog = await prisma.dog.findUnique({

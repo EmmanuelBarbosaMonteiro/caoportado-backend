@@ -32,7 +32,7 @@ export class FetchAccommodationPerOwnerUseCase {
       return left(new ResourceNotFoundError())
     }
 
-    const accommodations = await this.accommodations.findAll(ownerId)
+    const accommodations = await this.accommodations.findAllByOwner(ownerId)
 
     return right({ accommodations })
   }

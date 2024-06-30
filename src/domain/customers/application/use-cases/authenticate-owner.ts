@@ -48,6 +48,7 @@ export class AuthenticateOwnerUseCase {
       sub: owner.id.toString(),
       name: owner.firstName.toString().toUpperCase(),
       email: owner.email.toString().toLowerCase(),
+      role: owner.role.toString().toLowerCase(),
     })
 
     return right({

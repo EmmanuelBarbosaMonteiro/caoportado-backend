@@ -3,6 +3,7 @@ import { Injectable } from '@nestjs/common'
 import { PrismaService } from '../prisma.service'
 import { PrismaOwnerMapper } from '../mappers/prisma-owner-mapper'
 import { Owner } from '@/domain/customers/enterprise/entities/owner'
+import { PrismaOwnerFullMapper } from '../mappers/prisma-owner-full-mapper'
 
 @Injectable()
 export class PrismaOwnerRepository implements OwnersRepository {
@@ -42,5 +43,58 @@ export class PrismaOwnerRepository implements OwnersRepository {
     await this.prisma.user.create({
       data,
     })
+  }
+
+  async findAll(
+    customerName: string,
+    pageIndex: number,
+  ): Promise<{
+    owners: Owner[]
+    meta: {
+      pageIndex: number
+      perPage: number
+      totalCount: number
+    }
+  }> {
+    const perPage = 5
+    const skip = (pageIndex - 1) * perPage
+
+    const [totalCount, owners] = await Promise.all([
+      this.prisma.user.count({
+        where: {
+          firstName: {
+            contains: customerName,
+            mode: 'insensitive',
+          },
+          role: 'CUSTOMER',
+        },
+      }),
+      this.prisma.user.findMany({
+        where: {
+          firstName: {
+            contains: customerName,
+            mode: 'insensitive',
+          },
+          role: 'CUSTOMER',
+        },
+        skip,
+        take: perPage,
+        include: {
+          dogs: true,
+          Accommodation: true,
+        },
+      }),
+    ])
+
+    const ownerDomains = owners.map(PrismaOwnerFullMapper.toDomain)
+
+    return {
+      owners: ownerDomains,
+      meta: {
+        pageIndex,
+        perPage,
+        totalCount,
+      },
+    }
   }
 }

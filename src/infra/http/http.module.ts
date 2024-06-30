@@ -19,6 +19,12 @@ import { GetDogByIdPerOwnerUseCase } from '@/domain/customers/application/use-ca
 import { CreateAccommodationController } from './controllers/create-accommodation.controller'
 import { FetchAccommodationPerOwnerController } from './controllers/fetch-accommodation-per-owner.controller'
 import { FetchAccommodationPerOwnerUseCase } from '@/domain/customers/application/use-cases/fetch-accommodation-per-owner'
+import { FetchAllOwnersController } from './controllers/fetch-owners.controller'
+import { FetchAllOwnersUseCase } from '@/domain/customers/application/use-cases/fetch-all-owners'
+import { FetchAllAccommodationsController } from './controllers/fetch-all-accommodations.controller'
+import { FetchAllAccommodationsUseCase } from '@/domain/customers/application/use-cases/fetch-all-accommodations'
+import { SetStatusAccommodationController } from './controllers/set-status-accommodation.controller'
+import { SetStatusAccommodationUseCase } from '@/domain/customers/application/use-cases/set-status-accommodation'
 
 @Module({
   imports: [DatabaseModule, CryptographyModule],
@@ -32,6 +38,9 @@ import { FetchAccommodationPerOwnerUseCase } from '@/domain/customers/applicatio
     CreateAccommodationController,
     GetDogByIdPerOwnerController,
     FetchAccommodationPerOwnerController,
+    FetchAllOwnersController,
+    FetchAllAccommodationsController,
+    SetStatusAccommodationController,
   ],
   providers: [
     CreateDogUseCase,
@@ -43,6 +52,9 @@ import { FetchAccommodationPerOwnerUseCase } from '@/domain/customers/applicatio
     CreateAccommodationUseCase,
     GetDogByIdPerOwnerUseCase,
     FetchAccommodationPerOwnerUseCase,
+    FetchAllOwnersUseCase,
+    FetchAllAccommodationsUseCase,
+    SetStatusAccommodationUseCase,
   ],
 })
 export class HttpModule {}

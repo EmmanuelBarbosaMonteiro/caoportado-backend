@@ -48,7 +48,6 @@ export class PrismaDogsRepository implements DogsRepository {
         createdAt: 'desc',
       },
     })
-    console.log(dogs)
 
     return dogs.map(PrismaDogMapper.toDomain)
   }

@@ -1,6 +1,8 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { DogProps } from './dog'
+import { AccommodationProps } from './Accommodation'
 
 export enum Role {
   ADMIN = 'ADMIN',
@@ -13,6 +15,9 @@ export interface OwnerProps {
   email: string
   password: string
   role: Role
+
+  dogs?: DogProps[]
+  accommodations?: AccommodationProps[]
 
   createdAt: Date
   updatedAt?: Date | null
@@ -37,6 +42,14 @@ export class Owner extends Entity<OwnerProps> {
 
   get role() {
     return this.props.role
+  }
+
+  get dogs() {
+    return this.props.dogs || []
+  }
+
+  get accommodations() {
+    return this.props.accommodations || []
   }
 
   get createdAt() {

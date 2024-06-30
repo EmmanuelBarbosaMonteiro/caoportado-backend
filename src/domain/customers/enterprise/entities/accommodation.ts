@@ -3,6 +3,8 @@
 import { Entity } from '@/core/entities/entity'
 import { UniqueEntityID } from '@/core/entities/unique-entity-id'
 import { Optional } from '@/core/types/optional'
+import { OwnerProps } from './owner'
+import { DogProps } from './dog'
 
 export enum StatusAccommodation {
   PENDING = 'PENDING',
@@ -17,6 +19,9 @@ export interface AccommodationProps {
   checkInDate: Date
   checkOutDate: Date
   isPaid?: Date | null
+
+  owner?: OwnerProps
+  dog?: DogProps
 
   createdAt: Date
   updatedAt?: Date | null
@@ -35,6 +40,11 @@ export class Accommodation extends Entity<AccommodationProps> {
     return this.props.status
   }
 
+  setStatus(newStatus: StatusAccommodation) {
+    this.props.status = newStatus
+    this.props.updatedAt = new Date()
+  }
+
   get checkInDate() {
     return this.props.checkInDate
   }
@@ -45,6 +55,14 @@ export class Accommodation extends Entity<AccommodationProps> {
 
   get isPaid() {
     return this.props.isPaid
+  }
+
+  get dog() {
+    return this.props.dog
+  }
+
+  get owner() {
+    return this.props.owner
   }
 
   get createdAt() {
